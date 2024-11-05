@@ -1,28 +1,21 @@
 // src/App.js
 import { useState, useEffect } from 'react';
 import { 
- LineChart, 
- Line, 
- BarChart, 
- Bar, 
- PieChart, 
- Pie, 
- Cell,
- XAxis, 
- YAxis, 
- CartesianGrid, 
- Tooltip, 
- Legend, 
- ResponsiveContainer 
+  LineChart, 
+  Line, 
+  BarChart, 
+  Bar, 
+  PieChart, 
+  Pie, 
+  Cell,
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend, 
+  ResponsiveContainer 
 } from 'recharts';
-import { Mail, Phone, Github, Linkedin, Moon, Sun, Code, Award, ThumbsUp, Users } from 'lucide-react';
-
-const skillData = [
- { name: 'AWS', value: 85 },
- { name: 'Python', value: 75 },
- { name: 'Infrastructure as Code', value: 70 },
- { name: 'Docker', value: 65 },
-];
+import { Mail, Phone, Github, Linkedin, Moon, Sun, Book, ode, Award, ThumbsUp, Users, ChevronDown,ChevronUp } from 'lucide-react';
 
 const experienceData = [
   { 
@@ -68,9 +61,15 @@ const LAMBDA_URL = ''; // Lambda 함수의 URL
 
 export default function InteractiveResume() {
  const [darkMode, setDarkMode] = useState(false);
- const [activeChart, setActiveChart] = useState('skills');
+ const [activeChart, setActiveChart] = useState('experience');
  const [visitCount, setVisitCount] = useState(0);
  const [likeCount, setLikeCount] = useState(0);
+ const [expandedSection, setExpandedSection] = useState(null);  // 추가
+
+ // toggleSection 함수 추가
+ const toggleSection = (section) => {
+   setExpandedSection(expandedSection === section ? null : section);
+ };
 
  useEffect(() => {
    // 방문 카운트 GET
@@ -97,21 +96,9 @@ export default function InteractiveResume() {
      .then(data => setLikeCount(data.likes));
  };
 
- const baseTextColor = darkMode ? 'text-gray-500' : 'text-gray-800';
+ const baseTextColor = darkMode ? 'text-white' : 'text-gray-800';
  const baseBgColor = darkMode ? 'bg-gray-900' : 'bg-gray-100';
  const cardBgColor = darkMode ? 'bg-gray-800' : 'bg-white';
-
- const renderSkillsChart = () => (
-   <ResponsiveContainer width="100%" height={300}>
-     <BarChart data={skillData} layout="vertical">
-       <CartesianGrid strokeDasharray="3 3" />
-       <XAxis type="number" domain={[0, 100]} />
-       <YAxis dataKey="name" type="category" />
-       <Tooltip />
-       <Bar dataKey="value" fill="#8884d8" />
-     </BarChart>
-   </ResponsiveContainer>
- );
 
   const renderExperienceChart = () => (
     <ResponsiveContainer width="100%" height={300}>
@@ -212,109 +199,238 @@ export default function InteractiveResume() {
            {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
          </button>
        </header>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className={`p-6 rounded-lg ${cardBgColor}`}>
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <Mail className="w-5 h-5 mr-2" /> Contact
-            </h3>
-            <div className="space-y-2">
-              <a 
-                href="mailto:example@example.com" 
-                className="text-blue-500 hover:text-blue-700 flex items-center"
-              >
-                <Mail className="w-4 h-4 mr-2" />
-                example@example.com
-              </a>
-              <p className="flex items-center">
-                <Phone className="w-4 h-4 mr-2" />
-                010-1234-5678
-              </p>
-              <a 
-                href="https://github.com/yourgithubid" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-blue-500 hover:text-blue-700 flex items-center"
-              >
-                <Github className="w-4 h-4 mr-2" />
-                Github: yourid
-              </a>
-              <a 
-                href="https://linkedin.com/in/yourprofile" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-blue-500 hover:text-blue-700 flex items-center"
-              >
-                <Linkedin className="w-4 h-4 mr-2" />
-                LinkedIn: yourprofile
-              </a>
-            </div>
-          </div>
-          <div className={`p-6 rounded-lg ${cardBgColor}`}>
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <Award className="w-5 h-5 mr-2" /> Achievements
-            </h3>
-            <ul className="list-disc list-inside">
-              <li>AWS GameDay 2등 수상</li>
-              <li>교내 클라우드 해커톤에서 우수상 수상</li>
-              <li>AWS 기반 CI/CD 파이프라인 구축</li>
-            </ul>
-          </div>
+      <section className="mb-8 flex flex-wrap gap-4 text-sm">
+        <a 
+          href="mailto:example@email.com" 
+          className="flex items-center hover:text-blue-500 transition-colors"
+        >
+          <Mail className="w-4 h-4 mr-2" />
+          example@email.com
+        </a>
+        <div className="flex items-center">
+          <Phone className="w-4 h-4 mr-2" />
+          010-1234-5678
         </div>
+        <a 
+          href="https://github.com/yourid" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center hover:text-blue-500 transition-colors"
+        >
+          <Github className="w-4 h-4 mr-2" />
+          github.com/yourid
+        </a>
+        <a 
+          href="https://linkedin.com/in/yourprofile" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center hover:text-blue-500 transition-colors"
+        >
+          <Linkedin className="w-4 h-4 mr-2" />
+          linkedin.com/in/yourprofile
+        </a>
+      </section>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className={`p-6 rounded-lg ${cardBgColor}`}>
+          <h3 className="text-xl font-semibold mb-4 flex items-center">
+            <Award className="w-5 h-5 mr-2" /> Achievements
+          </h3>
+          <ul className="space-y-4">
+          <li>
+            <span className="font-medium">- 해커톤 입상: DSC 공유대학 해커톤 최우수상</span>
+            <ul className="mt-1 ml-4 text-sm">
+              <li className="text-gray-600 dark:text-gray-400">모빌리티를 활용한 지역사회 문제해결을 주제로 한 해커톤에서 사회적 고립 청년들의 사회 복귀를 지원하는 챌린지 프로젝트를 설계하여, AWS 서비스 기반의 데이터 수집 및 분석을 통해 맞춤형 지원 방안을 제안</li>
+            </ul>
+          </li>
+          <li>
+            <span className="font-medium">- AWS GameDay 행사 참여: Generative AI Unicorn Party GameDay</span>
+            <ul className="mt-1 ml-4 text-sm">
+              <li className="text-gray-600 dark:text-gray-400">참가자들이 AWS 솔루션을 사용하여 실제 기술 문제를 해결하는 데 도전하는 게임화된 학습 이벤트로 해당 Gameday에서는 생성형 AI와 관련된 문제 해결을 중심으로 진행</li>
+            </ul>
+          </li>
+        </ul>
+        </div>
+        <div className={`p-6 rounded-lg ${cardBgColor}`}>
+          <h3 className="text-xl font-semibold mb-4 flex items-center">
+            <Award className="w-5 h-5 mr-2" /> Project Distribution
+          </h3>
+            {renderProjectDistribution()}
+        </div>
+      </div>
+      <section className="mb-8">
+        <h3 className="text-2xl font-semibold mb-4">Education</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[
+            {
+              title: 'GenAI with Cloud',
+              description: 'PartyRock 위젯 활용 AI 실습',
+              achievements: [
+                'AWS AI 서비스 활용한 애플리케이션 개발 사례 학습',
+                'AI 생성 콘텐츠의 투명성, 딥페이크 등 윤리적 문제와 사회적 영향 이해',
+                '책임 있는 AI 개발을 위한 AWS의 기술 및 정책 소개: Amazon Bedrock Guardrails',
+                'Amazon Titan Image Generator의 워터마크 기능 및 감지 API'
+              ],
+            },
+            {
+              title: '서비스 배포 with Cloud',
+              description: '2-티어, 3-티어 아키텍처 구축 실습',
+              achievements: [
+                '랜덤 명언 앱, AI 학습 노트 앱 개발 및 배포',
+                'RDS 연동, API 및 프론트엔드(React) 개발',
+                '배포(S3, EC2), AI 기능(Bedrock) 연동까지 전 과정 실습 경험'
+              ],
+            },
+            {
+              title: 'Serverless & AI 실습',
+              description: '서버리스 기반 챗봇 개발 실습',
+              achievements: [
+                'Rekognition 활용 얼굴인식 로그인 구현 실습',
+                'S3 프론트엔드 배포 및 Lambda 함수와 boto3를 활용한 백엔드 배포',
+                'CloudFront를 활용하여 HTTPS 엔드포인트 배포 및 S3 웹 사이트 통합',
+              ],
+            },
+            {
+              title: 'AWS 자격증반 수강',
+              description: 'AWS CLF, SAA 자격증반 수강 및 대비',
+              achievements: [
+                'AWS의 핵심 서비스 이해와 클라우드 설계 원칙 학습',
+                '실전 문제 풀이를 통한 시험 대비 역량 강화',
+                '문제 풀이 사이트 및 학습 자료로 부족한 부분 보완'
+              ],
+            },
+            {
+              title: '서버리스 MSA',
+              description: '서버리스 MSA 아키텍처 기반 3-티어 아키텍처 구축 실습',
+              achievements: [
+                '쇼핑몰 애플리케이션 개발 및 배포',
+                'SQS를 통해 마이크로서비스 간의 비동기 메시징 처리 및 이벤트 기반 아키텍처 구현',
+                'Streamlit을 활용해 간단한 프론트엔드를 구축하여 사용자 인터페이스 개발',
+                <a href="https://www.notion.so/NxtCloud-MSA-10579923b3c545059678d239155a17b8?pvs=4" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-black-500 hover:underline">
+                  공유 노션 자료
+                </a>,
+                <a href="https://github.com/nxtcloud-org/msa-for-student.git" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-black-500 hover:underline">
+                  학생 clone 레포
+                </a>
+              ],
+            },
+          ].map((edu, index) => (
+            <div key={index} className={`p-4 rounded-lg ${cardBgColor} shadow-lg transition-all duration-300`}>
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => toggleSection(`edu-${index}`)}
+              >
+                <div>
+                  <h4 className="text-xl font-semibold">{edu.title}</h4>
+                  <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {edu.description}
+                  </p>
+                </div>
+                {expandedSection === `edu-${index}` ? (
+                  <ChevronUp className="w-6 h-6" />
+                ) : (
+                  <ChevronDown className="w-6 h-6" />
+                )}
+              </div>
+              {expandedSection === `edu-${index}` && (
+                <ul className={`list-disc list-inside mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {edu.achievements.map((achievement, i) => (
+                    <li key={i} className="mt-2">
+                      {achievement}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
        <div className={`p-6 rounded-lg ${cardBgColor} mb-8`}>
          <div className="flex gap-4 mb-4">
-           <button
-             onClick={() => setActiveChart('skills')}
-             className={`px-4 py-2 rounded ${activeChart === 'skills' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
-           >
-             Skills
-           </button>
            <button
              onClick={() => setActiveChart('experience')}
              className={`px-4 py-2 rounded ${activeChart === 'experience' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
            >
              Experience
            </button>
-           <button
-             onClick={() => setActiveChart('distribution')}
-             className={`px-4 py-2 rounded ${activeChart === 'distribution' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
-           >
-             Project Distribution
-           </button>
          </div>
-         {activeChart === 'skills' && renderSkillsChart()}
          {activeChart === 'experience' && renderExperienceChart()}
-         {activeChart === 'distribution' && renderProjectDistribution()}
        </div>
 
-       <section className={`p-6 rounded-lg ${cardBgColor}`}>
-        <h3 className="text-xl font-semibold mb-4 flex items-center">
-          <Code className="w-5 h-5 mr-2" /> Projects
-        </h3>
-        <div className="space-y-4">
-          <div className="p-4 bg-blue-100 dark:bg-blue-900 rounded">
-            <h4 className="font-semibold">학과 스터디 매칭 플랫폼 AWS 배포</h4>
-            <p className="text-sm whitespace-pre-line">
-              {`- AWS EC2에 Node.js 백엔드 서버 배포 및 RDS(MySQL) 연동
-              - Terraform IaC를 활용한 AWS 리소스 자동화
-              - 프로젝트 기여: DevOps/인프라 담당`}
-            </p>
+       <section className="mb-8">
+          <h3 className="text-2xl font-semibold mb-4">Projects</h3>
+          <div className="space-y-4">
+            {[
+              {
+                title: '학과 스터디 매칭 플랫폼 AWS 배포',
+                achievements: [
+                  'AWS EC2에 Node.js 백엔드 서버 배포 및 RDS(MySQL) 연동',
+                  'Terraform IaC를 활용한 AWS 리소스 자동화',
+                  'DevOps/인프라 담당'
+                ],
+              },
+              {
+                title: '교내 동아리 웹사이트 클라우드 전환',
+                achievements: [
+                  'AWS S3와 CloudFront를 활용한 정적 웹사이트 호스팅',
+                  'Route53을 통한 도메인 관리 및 HTTPS 설정',
+                  'Lambda를 활용한 이미지 리사이징 자동화 구현',
+                  'CloudWatch로 접속자 수 모니터링 대시보드 구축'
+                ],
+              },
+              {
+                title: '개인 블로그 운영',
+                achievements: [
+                  '프로젝트 진행 과정 블로그 연재 중',
+                  'SAA 문제 풀이 블로그 연재 중'
+                ],
+              }
+            ].map((project, index) => (
+              <div key={index} className={`p-4 rounded-lg ${cardBgColor} shadow-lg transition-all duration-300`}>
+                <div
+                  className="flex justify-between items-center cursor-pointer"
+                  onClick={() => toggleSection(`project-${index}`)}
+                >
+                  <h4 className="text-xl font-semibold">{project.title}</h4>
+                  {expandedSection === `project-${index}` ? (
+                    <ChevronUp className="w-6 h-6" />
+                  ) : (
+                    <ChevronDown className="w-6 h-6" />
+                  )}
+                </div>
+                {expandedSection === `project-${index}` && (
+                  <ul className={`list-disc list-inside mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                    {project.achievements.map((achievement, i) => (
+                      <li key={i} className="mt-2">
+                        {achievement}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
           </div>
-          <div className="p-4 bg-green-100 dark:bg-green-900 rounded">
-            <h4 className="font-semibold">교내 동아리 웹사이트 클라우드 전환</h4>
-            <p className="text-sm whitespace-pre-line">
-              {`- AWS S3와 CloudFront를 활용한 정적 웹사이트 호스팅
-              - Route53을 통한 도메인 관리 및 HTTPS 설정
-              - Lambda를 활용한 이미지 리사이징 자동화 구현
-              - CloudWatch로 접속자 수 모니터링 대시보드 구축`}
-            </p>
-          </div>
-          <div className="p-4 bg-yellow-100 dark:bg-yellow-900 rounded">
-            <h4 className="font-semibold">개인 블로그 운영</h4>
-            <p className="text-sm whitespace-pre-line">
-              {`- 프로젝트 진행 과정 블로그 연재 중
-              - SAA 문제 풀이 블로깅 연재 중`}
-            </p>
-          </div>
+        </section>
+        <section className="mb-8">
+        <h3 className="text-2xl font-semibold mb-4">Skills</h3>
+        <div className="flex flex-wrap gap-2">
+          {[
+            'AWS', 'Python', 'Terraform', 'Docker', 'CI/CD', 'React'
+          ].map((skill) => (
+            <span
+              key={skill}
+              className={`px-3 py-1 rounded-full text-sm ${
+                darkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-gray-800'
+              } transition-colors duration-300 hover:bg-blue-500 hover:text-white cursor-default`}
+            >
+              {skill}
+            </span>
+          ))}
         </div>
       </section>
      </div>
