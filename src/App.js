@@ -57,7 +57,7 @@ const projectDistribution = [
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const LAMBDA_URL = ''; // Lambda 함수의 URL
+const LAMBDA_URL = 'https://YOUR-LAMBDA-URL'; // Lambda 함수의 URL
 
 export default function InteractiveResume() {
  const [darkMode, setDarkMode] = useState(false);
