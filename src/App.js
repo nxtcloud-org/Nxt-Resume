@@ -58,6 +58,8 @@ const projectDistribution = [
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const LAMBDA_URL = 'https://YOUR-LAMBDA-URL'; // Lambda 함수의 URL
+// .env파일 생성 후 입력 REACT_APP_LAMBDA_URL=https://YOUR-LAMBDA-URL
+// const LAMBDA_URL = process.env.REACT_APP_LAMBDA_URL;
 
 export default function InteractiveResume() {
  const [darkMode, setDarkMode] = useState(false);
