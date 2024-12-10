@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="max-w-6xl mx-auto p-6">
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-4xl font-bold mb-2">홍길동</h1>
+        <h2 class="text-2xl text-blue-500">데브옵스 엔지니어링에 대한 열정을 가진 대학생</h2>
+      </div>
+      <button id="darkModeToggle" class="p-2 rounded-full bg-gray-800 text-white">
+        🌙
+      </button>
+    </header>
+
+    <!-- Contact Info -->
+    <section class="mb-8 flex flex-wrap gap-4 text-sm">
+      <a href="mailto:example@email.com" class="flex items-center hover:text-blue-500 transition-colors">
+        📧 example@email.com
+      </a>
+      <div class="flex items-center">📞 010-1234-5678</div>
+      <a href="https://github.com/yourid" target="_blank" class="flex items-center hover:text-blue-500 transition-colors">
+        🐙 github.com/yourid
+      </a>
+      <a href="https://linkedin.com/in/yourprofile" target="_blank" class="flex items-center hover:text-blue-500 transition-colors">
+        🔗 linkedin.com/in/yourprofile
+      </a>
+    </section>
+
+    <!-- Stats -->
+    <div class="bg-white p-4 rounded-lg mb-8 flex justify-between items-center shadow">
+      <div class="flex space-x-8">
+        <div class="flex items-center">👥 방문자 수: <span id="visitCount">0</span></div>
+        <div class="flex items-center">👍 좋아요: <span id="likeCount">0</span></div>
+      </div>
+      <button id="likeButton" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+        👍 좋아요
+      </button>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="p-6 bg-white rounded-lg shadow">
+        <h3 class="text-xl font-semibold mb-4">Experience</h3>
+        <canvas id="experienceChart" width="400" height="300"></canvas>
+      </div>
+      <div class="p-6 bg-white rounded-lg shadow">
+        <h3 class="text-xl font-semibold mb-4">Project Distribution</h3>
+        <canvas id="projectChart" width="400" height="300"></canvas>
+      </div>
+    </div>
+
+    <!-- Skills -->
+    <section class="mb-8">
+      <h3 class="text-2xl font-semibold mb-4">Skills</h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="px-3 py-1 rounded-full bg-gray-200 text-gray-800">AWS</span>
+        <span class="px-3 py-1 rounded-full bg-gray-200 text-gray-800">Python</span>
+        <span class="px-3 py-1 rounded-full bg-gray-200 text-gray-800">Terraform</span>
+        <span class="px-3 py-1 rounded-full bg-gray-200 text-gray-800">Docker</span>
+        <span class="px-3 py-1 rounded-full bg-gray-200 text-gray-800">CI/CD</span>
+        <span class="px-3 py-1 rounded-full bg-gray-200 text-gray-800">React</span>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const likeButton = document.getElementById('likeButton');
+    const visitCount = document.getElementById('visitCount');
+    const likeCount = document.getElementById('likeCount');
+
+    // Dummy Data for Charts
+    const experienceData = {
+      labels: [2022, 2023, 2024, 2025],
+      datasets: [
+        {
+          label: 'Certifications',
+          data: [1, 2, 3, 5],
+          borderColor: '#8884d8',
+          fill: false,
+        },
+        {
+          label: 'Activities',
+          data: [2, 3, 4, 5],
+          borderColor: '#82ca9d',
+          fill: false,
+        },
+      ],
+    };
+
+    const projectData = {
+      labels: ['인프라/데브옵스', '백엔드 개발', '클라우드 아키텍처', '모니터링/로깅'],
+      datasets: [
+        {
+          data: [40, 30, 20, 10],
+          backgroundColor: ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'],
+        },
+      ],
+    };
+
+    // Chart.js Rendering
+    const experienceChart = new Chart(document.getElementById('experienceChart'), {
+      type: 'line',
+      data: experienceData,
+    });
+
+    const projectChart = new Chart(document.getElementById('projectChart'), {
+      type: 'pie',
+      data: projectData,
+    });
+
+    // Toggle Dark Mode
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('bg-gray-900');
+      document.body.classList.toggle('text-white');
+    });
+
+    // Increment Like Count
+    likeButton.addEventListener('click', () => {
+      likeCount.textContent = parseInt(likeCount.textContent) + 1;
+    });
+
+    // Simulate API Call for Visit Count
+    visitCount.textContent = 123;
+  </script>
+</body>
+</html>
