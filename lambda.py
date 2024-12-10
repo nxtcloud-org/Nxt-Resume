@@ -15,7 +15,7 @@ def lambda_handler(event, context):
     print(method)
     print("##########")
     if path == "/" and method == "GET":
-        return {"statusCode": 200, "body": json.dumps({"message": "람다 작동 확인!"})}
+        return {"statusCode": 200, "body": json.dumps({"message": "람다 작동 확인!"}, ensure_ascii=False)}
     elif path == "/visit" and method == "GET":
         print("방문!")
         return handle_visit()
@@ -26,7 +26,7 @@ def lambda_handler(event, context):
         print("좋아요 추가!")
         return handle_like()
     else:
-        return {"statusCode": 400, "body": json.dumps({"message": "Bad Request"})}
+        return {"statusCode": 400, "body": json.dumps({"message": "Bad Request"}, ensure_ascii=False)}
 
 
 def handle_visit():
@@ -37,15 +37,15 @@ def handle_visit():
         ReturnValues="UPDATED_NEW",
     )
     visits = response["Attributes"]["visits"]
-    print(f"visits type is ${type(visits)}")
-    return {"statusCode": 200, "body": json.dumps({"visits": visits})}
+    print(f"visits type is {type(visits)}")
+    return {"statusCode": 200, "body": json.dumps({"visits": visits}, ensure_ascii=False)}
 
 
 def handle_likes():
     response = table.get_item(Key={"id": "like_count"})
     likes = response.get("Item", {}).get("likes", 0)
-    print(f"likes type is ${type(likes)}")
-    return {"statusCode": 200, "body": json.dumps({"likes": likes})}
+    print(f"likes type is {type(likes)}")
+    return {"statusCode": 200, "body": json.dumps({"likes": likes}, ensure_ascii=False)}
 
 
 def handle_like():
@@ -56,4 +56,4 @@ def handle_like():
         ReturnValues="UPDATED_NEW",
     )
     likes = response["Attributes"]["likes"]
-    return {"statusCode": 200, "body": json.dumps({"likes": likes})}
+    return {"statusCode": 200, "body": json.dumps({"likes": likes}, ensure_ascii=False)}
