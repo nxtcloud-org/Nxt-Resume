@@ -190,7 +190,7 @@ export default function InteractiveResume() {
        <header className="flex justify-between items-center mb-8">
          <div>
            <h1 className="text-4xl font-bold mb-2">홍길동</h1>
-           <h2 className="text-2xl text-blue-500">데브옵스 엔지니어링에 대한 열정을 가진 대학생</h2>
+           <h2 className="text-2xl text-blue-500">클라우드 엔지니어링에 대한 열정을 가진 대학생</h2>
          </div>
          <button
            onClick={() => setDarkMode(!darkMode)}
