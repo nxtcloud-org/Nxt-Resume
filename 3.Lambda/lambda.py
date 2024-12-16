@@ -15,7 +15,10 @@ def lambda_handler(event, context):
     print(method)
     print("##########")
     if path == "/" and method == "GET":
-        return {"statusCode": 200, "body": json.dumps({"message": "람다 작동 확인!"}, ensure_ascii=False)}
+        return {
+            "statusCode": 200,
+            "body": json.dumps({"message": "람다 작동 확인!"}, ensure_ascii=False),
+        }
     elif path == "/visit" and method == "GET":
         print("방문!")
         return handle_visit()
@@ -26,23 +29,29 @@ def lambda_handler(event, context):
         print("좋아요 추가!")
         return handle_like()
     else:
-        return {"statusCode": 400, "body": json.dumps({"message": "Bad Request"}, ensure_ascii=False)}
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"message": "Bad Request"}, ensure_ascii=False),
+        }
 
 
 def handle_visit():
     response = table.update_item(
-        Key={"id": "visit_count"},
+        Key={"type": "visit_count"},
         UpdateExpression="ADD visits :inc",
         ExpressionAttributeValues={":inc": 1},
         ReturnValues="UPDATED_NEW",
     )
     visits = response["Attributes"]["visits"]
     print(f"visits type is {type(visits)}")
-    return {"statusCode": 200, "body": json.dumps({"visits": visits}, ensure_ascii=False)}
+    return {
+        "statusCode": 200,
+        "body": json.dumps({"visits": visits}, ensure_ascii=False),
+    }
 
 
 def handle_likes():
-    response = table.get_item(Key={"id": "like_count"})
+    response = table.get_item(Key={"type": "like_count"})
     likes = response.get("Item", {}).get("likes", 0)
     print(f"likes type is {type(likes)}")
     return {"statusCode": 200, "body": json.dumps({"likes": likes}, ensure_ascii=False)}
@@ -50,7 +59,7 @@ def handle_likes():
 
 def handle_like():
     response = table.update_item(
-        Key={"id": "like_count"},
+        Key={"type": "like_count"},
         UpdateExpression="ADD likes :inc",
         ExpressionAttributeValues={":inc": 1},
         ReturnValues="UPDATED_NEW",
