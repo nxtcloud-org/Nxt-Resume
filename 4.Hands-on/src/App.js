@@ -179,11 +179,48 @@ export default function InteractiveResume() {
     );
   };
 
+  const toggleLanguage = () => {
+    setLanguage((prev) => (prev === "ko" ? "en" : "ko"));
+  };
+
   const handleLike = () => {
     fetch(`${LAMBDA_URL}/like`, { method: "POST" })
       .then((r) => r.json())
       .then((d) => setLikeCount(d.likes))
       .catch(console.error);
+  };
+
+  const generatePDF = async () => {
+    const pdfButton = document.getElementById("pdf-button");
+    const darkButton = document.getElementById("darkmode-button");
+    const langButton = document.getElementById("language-button");
+    const statsBar = document.getElementById("stats-bar");
+
+    if (pdfButton) pdfButton.style.display = "none";
+    if (darkButton) darkButton.style.display = "none";
+    if (langButton) langButton.style.display = "none";
+    if (statsBar) statsBar.style.display = "none";
+
+    // 현재 다크모드 상태 저장 및 라이트 모드 전환
+    originalDarkMode.current = darkMode;
+    setDarkMode(false);
+
+    // 모든 섹션 열기
+    const allEducationIds = localizedEducation.map((_, i) => `edu-${i}`);
+    const allProjectIds = localizedProjects.map((_, i) => `project-${i}`);
+    setExpandedSections([...allEducationIds, ...allProjectIds]);
+
+    // 일정 시간 후 PDF 생성 (렌더링 기다림)
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    window.print();
+
+    setTimeout(() => {
+      setDarkMode(originalDarkMode.current);
+      if (pdfButton) pdfButton.style.display = "block";
+      if (darkButton) darkButton.style.display = "block";
+      if (langButton) langButton.style.display = "block";
+      if (statsBar) statsBar.style.display = "flex";
+    }, 1000);
   };
 
   // Chart Renderers
@@ -236,6 +273,13 @@ export default function InteractiveResume() {
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-2">
         <div className="flex space-x-2">
           <button
+            id="language-button"
+            onClick={toggleLanguage}
+            className="px-3 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
+          >
+            {language === "ko" ? "en" : "ko"}
+          </button>
+          <button
             id="darkmode-button"
             onClick={() => setDarkMode(!darkMode)}
             className={`p-2 rounded-full ${
@@ -249,6 +293,14 @@ export default function InteractiveResume() {
             ) : (
               <Moon className="w-6 h-6" />
             )}
+          </button>
+        </div>
+        <div id="pdf-button">
+          <button
+            onClick={generatePDF}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700"
+          >
+            📄 {language === "ko" ? "PDF 만들기" : "Generate PDF"}
           </button>
         </div>
       </div>
