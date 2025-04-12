@@ -76,6 +76,9 @@
     const likeButton = document.getElementById('likeButton');
     const visitCount = document.getElementById('visitCount');
     const likeCount = document.getElementById('likeCount');
+    
+    const sections = document.querySelectorAll('section');
+    const heading = document.querySelector('h1');
 
     // Dummy Data for Charts
     const experienceData = {
@@ -116,11 +119,42 @@
       type: 'pie',
       data: projectData,
     });
+    
+    let dark = false;
 
     // Toggle Dark Mode
     darkModeToggle.addEventListener('click', () => {
+      dark = !dark;
       document.body.classList.toggle('bg-gray-900');
       document.body.classList.toggle('text-white');
+      darkModeToggle.textContent = dark ? "☀️" : "🌙";
+      
+      if (dark) {
+        darkModeToggle.classList.remove("bg-gray-800", "text-white");
+        darkModeToggle.classList.add("bg-white", "text-gray-800");
+      } else {
+        darkModeToggle.classList.remove("bg-white", "text-gray-800");
+        darkModeToggle.classList.add("bg-gray-800", "text-white");
+      }
+      
+      sections.forEach(section => {
+        if (dark) {
+          section.classList.remove('text-gray-800');
+          section.classList.add('text-white');
+        } else {
+          section.classList.remove('text-white');
+          section.classList.add('text-gray-800');
+        }
+      });
+      
+      // h1 텍스트 색상
+      if (dark) {
+        heading.classList.remove('text-gray-800');
+        heading.classList.add('text-white');
+      } else {
+        heading.classList.remove('text-white');
+        heading.classList.add('text-gray-800');
+      }
     });
 
     // Increment Like Count
@@ -129,7 +163,7 @@
     });
 
     // Simulate API Call for Visit Count
-    visitCount.textContent = 123;
+    // visitCount.textContent = 123;
   </script>
 </body>
 </html>
