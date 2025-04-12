@@ -42,7 +42,7 @@ def handle_visit():
         ExpressionAttributeValues={":inc": 1},
         ReturnValues="UPDATED_NEW",
     )
-    visits = response["Attributes"]["visits"]
+    visits = response["Attributes"]["visits"]  # int로 변환 작업 필요
     print(f"visits type is {type(visits)}")
     return {
         "statusCode": 200,
@@ -64,5 +64,5 @@ def handle_like():
         ExpressionAttributeValues={":inc": 1},
         ReturnValues="UPDATED_NEW",
     )
-    likes = response["Attributes"]["likes"]
+    likes = response["Attributes"]["likes"]  # int로 변환 작업 필요
     return {"statusCode": 200, "body": json.dumps({"likes": likes}, ensure_ascii=False)}
